@@ -11,39 +11,48 @@ class App extends React.Component {
     checkClick: []
   };
 
-  componentDidMount = () => {
-    const drummerImg = document.getElementsByClassName("dummerImg");
-    document.addEventListener("click", drummerImg, this.handleClick);
-  };
-
   handleClick = id => {
     console.log(id);
     this.setState(
       {
         score: this.state.score + 1
-      },
-      this.checkHighScore
+      },() =>{
+        this.checkClick(id);
+      }
+      
     );
-    this.checkClick(id);
+    
   };
   //if id is clicked again then it set a high score and restarts the game reset checkclicked array to empty
   checkClick = drummerClickedId => {
     //if this.state.checkClick is empty then push this.state.drummerClickedId to the array
     console.log(this.state.checkClick);
-    if (this.state.checkClick) {
-      this.state.checkClick.push(drummerClickedId);
+    if (this.state.checkClick.length==0) {
+      let copy = []
+      this.setState({checkClick: [drummerClickedId]});
+      console.log('first click')
+      console.log(this.state.checkClick)
     }
+    //if id is clicked again then it set a high score and restarts the game reset checkclicked array to empty
 
     this.state.checkClick.forEach(checkClickId => {
       // checkClickId = id
-      // if checkClickId exists in the array then do nothing, else if checkClickId exists set high score, restart game and shuffle array, and set the state of checkclicked to an empty array
-      if (checkClickId === drummerClickedId) {
+      // if checkClickId exists in the array then do nothing, else if checkClickId exists set high score, restart game, and set the state of checkclicked to an empty array
+      console.log('checkClicked ',checkClickId)
+      console.log('drummerClicked ', drummerClickedId)
+      console.log('---------')
+  
+      if (checkClickId == drummerClickedId) {
+        console.log('already clicked')
       } else {
         // then add the drummerClickedId to the checkClick array to be checked
-        this.state.checkClick.push(drummerClickedId);
+        const  copy = [...this.state.checkClick, drummerClickedId];
+        this.setState({checkClick: copy});
       }
-      console.log(this.state.checkClick);
+     
     });
+    console.log(this.state.checkClick);
+    this.shuffle ()
   };
 
   checkHighScore() {
@@ -53,6 +62,17 @@ class App extends React.Component {
       });
     }
   }
+  //shuffle drummers array when the id is clicked
+
+  shuffle = () => {
+    let temp = this.state.drummers.slice();
+
+    for (let i = temp.length - 1; i > 0; i--) {
+      let j = Math.floor(Math.random() * (i + 1));
+      [temp[i], temp[j]] = [temp[j], temp[i]];
+    }
+    this.setState({ drummers: temp });
+  };
 
   render() {
     return (
