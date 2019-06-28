@@ -22,8 +22,9 @@ class App extends React.Component {
       
     );
     
+     
   };
-  //if id is clicked again then it set a high score and restarts the game reset checkclicked array to empty
+  //if id is clicked again then it set a high score and restarts the game reset checkclicked array to empty 
   checkClick = drummerClickedId => {
     //if this.state.checkClick is empty then push this.state.drummerClickedId to the array
     console.log(this.state.checkClick);
@@ -77,6 +78,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="card">
+        <h1>Drummer Click</h1>
         <h2>Score: {this.state.score}</h2>
         <h2>High Score: {this.state.highScore}</h2>
         <div className="img-container" />
